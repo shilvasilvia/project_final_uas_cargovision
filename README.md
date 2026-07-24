@@ -1,72 +1,66 @@
-# 🌐 Global Supply Chain Risk Intelligence System
+# 🌍 Global Supply Chain Risk Intelligence System (CargoVision)
 
-[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shilvasilvia/project_final_uas_cargovision)
 [![Laravel](https://img.shields.io/badge/Laravel-12.0-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com)
 [![Testing](https://img.shields.io/badge/Tests-34%20PASSED-10B981?style=for-the-badge&logo=phpunit&logoColor=white)](https://phpunit.de)
 
-**Global Supply Chain Risk Intelligence System (CargoVision)** adalah aplikasi berbasis web cerdas untuk memantau, menganalisis, dan mengkalkulasi skor risiko rantai pasok (supply chain) global. Sistem ini mengintegrasikan data cuaca ekstrem, analisis sentimen berita geopolitik, indikator ekonomi makro World Bank, serta pemetaan pelabuhan interaktif secara real-time.
-
 📌 **Repository GitHub:** [https://github.com/shilvasilvia/project_final_uas_cargovision](https://github.com/shilvasilvia/project_final_uas_cargovision)
 
 ---
 
-## ✨ Fitur Utama Sistem
+## 📋 Status Modul & Spesifikasi Fitur
 
-### 1. 📊 Executive Risk Dashboard & Analytics
-- **Summary Cards**: Total Negara, Pelabuhan Global, Shipment Aktif, dan Active Weather Alerts.
-- **Peta Interaktif (Leaflet Map)**: Pemetaan kordinat lokasi pelabuhan dan pelayaran global.
-- **Grafik Distribusi (Chart.js)**: Status pengiriman (*In Transit*, *Delayed*, *Delivered*) dan tingkat keparahan cuaca (*Critical*, *High*, *Moderate*, *Low*).
-- **Top 5 High-Risk Countries Card**: Ranking 5 negara dengan indeks risiko tertinggi.
-
-### 2. 👥 Role-Based Access Control (RBAC: Admin vs User)
-| Modul / Fitur | 👑 Admin (`role: admin`) | 👤 User Biasa (`role: user`) |
-| --- | --- | --- |
-| **Master Data & Operasional** | **Full CRUD** (Tambah, Edit, Hapus) | **Read-Only** (Hanya Lihat Data) |
-| **Dashboard & Analisis** | Akses data & statistik global penuh | Akses ringkasan informasi sistem |
-| **Monitoring** | Kontrol monitoring global | Mengelola **Favorite Monitoring** Pribadi |
-| **Report & Export** | **Bisa** Akses Laporan, Export PDF & Excel | **403 Forbidden** (Tidak Ada Akses) |
-
-### 3. 🗂️ Master Data & Operasional CRUD
-- **Countries**: Pengelolaan data negara (Kode ISO, Ibu Kota, Region, Populasi).
-- **Ports**: Pengelolaan pelabuhan global dengan kordinat geografis (Latitude, Longitude).
-- **Shipments**: Monitoring pengiriman barang (*Origin*, *Destination*, *Status*, *Cargo Type*, *Risk Level*).
-- **Weather Alerts**: Peringatan dini cuaca ekstrim dan badai di wilayah pelabuhan.
-- **News & Sentiment Analysis**: Berita geopolitik dengan **Analisis Sentimen Otomatis** (*Positive*, *Negative*, *Neutral*).
-- **Risk Score Calculator**: Service otomatis mengkalkulasi skor risiko terpadu per negara (0-100).
-- **Country Comparison**: Komparasi langsung risiko dan indikator ekonomi antar 2 negara.
-
-### 4. 📄 Reporting & Export (PDF & Excel)
-- Halaman Khusus Laporan (`/reports`) dengan filter negara dan tanggal.
-- **Export PDF Eksekutif** menggunakan `barryvdh/laravel-dompdf`.
-- **Export Spreadsheet / CSV** untuk analisis data offline.
-
-### 5. 🔑 REST API Complete & Security (Sanctum)
-- Otentikasi API berbasis **Bearer Token** (`Laravel Sanctum`).
-- Full Endpoints CRUD JSON Response untuk `countries`, `ports`, `shipments`, `weather-alerts`, `news`, dan `risk-scores`.
-- File dokumentasi pengujian **Postman Collection Spec** di `public/postman_collection.json`.
+| No | Modul / Fitur | Status | Deskripsi |
+|:---:|:---|:---:|:---|
+| 1 | 🌍 **Country Intelligence Center** | 🟡 Terimplementasi | Pemantauan 10 negara utama dengan detail indikator makro. |
+| 2 | 📊 **Economic Data — GDP, Inflasi, Populasi** | 🟡 Terimplementasi | Integrasi API World Bank & tabel indikator ekonomi. |
+| 3 | 💱 **Currency Impact Dashboard** | 🟡 Terimplementasi | Monitoring dampak nilai tukar mata uang terhadap risiko rantai pasok. |
+| 4 | 🌦️ **Global Weather Monitoring** | 🟡 Terimplementasi | Monitoring peringatan dini badai & cuaca ekstrem di kawasan pelabuhan. |
+| 5 | ⚠️ **Risk Scoring Engine** | 🟡 Terimplementasi | Algoritma perhitungan skor risiko terpadu per negara (skala 0–100). |
+| 6 | 📰 **News Intelligence & Sentiment** | 🟡 Terimplementasi | Analisis sentimen berita geopolitik (*Positive, Negative, Neutral*). |
+| 7 | ⚓ **Port Location Dashboard** | 🟡 Terimplementasi | Peta interaktif Leaflet.js pemetaan lokasi pelabuhan global. |
+| 8 | 📈 **Data Visualization Dashboard** | 🟡 Terimplementasi | Visualisasi grafik interaktif distribusi pengiriman & skor risiko. |
+| 9 | 🔍 **Country Comparison Engine** | 🟡 Terimplementasi | Komparasi *side-by-side* indikator & risiko antar 2 negara. |
+| 10 | ⭐ **Favorite Monitoring List** | 🟡 Terimplementasi | Fitur simpan/bookmark negara favorit bagi pengguna. |
+| 11 | 🛠️ **Admin Dashboard & RBAC** | 🟡 Terimplementasi | Manajemen Master Data, User, Pelabuhan, Laporan & PDF/Excel Export. |
 
 ---
 
-## 🛠️ Teknologi & Library
+## 🎯 Spesifikasi Kebutuhan Teknis (Requirement Prompt)
 
-- **Backend**: Laravel 12, PHP 8.2+
-- **Database**: SQLite / MySQL
-- **Frontend**: Blade, Bootstrap 5, FontAwesome 6, Chart.js, Leaflet.js
-- **API External**: World Bank API, Exchange Rate Currency API
-- **Packages**: `laravel/sanctum`, `barryvdh/laravel-dompdf`, `laravel/breeze`
+> **Role & Prompt Specification:**
+> Anda adalah Senior Full-Stack Laravel Developer dengan keahlian dalam Data Visualization dan GIS (Geographic Information Systems).
+>
+> **Task:** Membangun aplikasi "Global Supply Chain Intelligence" menggunakan Laravel 12 untuk menampilkan data rantai pasok global 10 negara.
+
+### 🛠️ Requirement Teknis & Arsitektur:
+- **Framework & UI**: Laravel 12 & Bootstrap 5 dengan aksen Deep Dark Mode modern.
+- **Peta & Pelabuhan**: Leaflet.js interaktif dengan kordinat geografis pelabuhan global.
+- **Data Real-time**: Fetching Data (Kurs, Risiko, Cuaca) dan pembaruan informasi berkala.
+- **Visualisasi Data**: Chart interaktif (Chart.js) & Compare Mode untuk membandingkan statistik antar negara secara *side-by-side*.
+- **Waktu**: Penanganan waktu lokal (UTC) dan timestamp yang akurat.
+- **Database & Model**: Skema database modular untuk `countries`, `ports` (latitude/longitude), `shipments`, `weather_alerts`, `economic_data`, `news`, `audit_logs`, dan `favorites`.
+
+---
+
+## 👥 Hak Akses & Pembagian Role User
+
+### 1. 👤 Bagian User (Pengguna)
+User adalah pengguna aplikasi yang memantau rantai pasok global:
+- **Global Country Dashboard**: Memilih negara spesifik (seperti Jerman, China, Indonesia, Australia) untuk menampilkan data GDP, inflasi, populasi, mata uang, dan cuaca.
+- **Favorite Monitoring List**: Menyimpan negara-negara tertentu yang ingin dipantau secara khusus ke dalam daftar favorit.
+- **Analisis & Komparasi**: Memanfaatkan visualisasi grafik, peta cuaca global, dashboard kurs mata uang, analisis sentimen berita, dan *Country Comparison Engine*.
+
+### 2. 👑 Bagian Admin (Pengelola)
+Admin memiliki peran sebagai pengelola sistem di back-office:
+- **Kelola User**: Mengelola data pengguna yang terdaftar di dalam platform.
+- **Kelola Master Data & Dataset Pelabuhan**: Mengakses & memperbarui data pelabuhan, negara, dan operasional pengiriman.
+- **Kelola Laporan & Artikel Analisis**: Mengakses modul laporan, rekalkulasi skor risiko, serta ekspor laporan ke format **PDF & Excel**.
 
 ---
 
 ## 🚀 Panduan Instalasi & Penggunaan
-
-### 1. Prasyarat System
-- PHP >= 8.2
-- Composer
-- Node.js & NPM
-
-### 2. Langkah Instalasi
 
 ```bash
 # 1. Clone repository
@@ -91,54 +85,6 @@ npm run build
 php artisan serve
 ```
 
-Aplikasi dapat diakses di URL: `http://127.0.0.1:8000`
-
----
-
-## 🔑 Kredensial Default Login
-
-Sistem telah menyediakan 2 akun seeder bawaan untuk pengujian:
-
-| Role | Email | Password | Hak Akses |
-| --- | --- | --- | --- |
-| **👑 Admin** | `admin@example.com` | `password` | Full Access (CRUD, Reports, PDF/Excel) |
-| **👤 User Biasa** | `user@example.com` | `password` | Read-Only & Favorite Monitoring |
-
----
-
-## 🧪 Pengujian Otomatis (Automated Testing)
-
-Menjalankan seluruh 34 unit & feature test suite:
-
-```bash
-php artisan test
-```
-
-**Hasil Testing:**
-```text
-  Tests:    34 passed (89 assertions)
-  Duration: ~2.5s
-```
-
----
-
-## 🌐 Dokumentasi REST API
-
-Ekspor file Postman Collection JSON dapat di-import langsung dari lokasi:
-`public/postman_collection.json`
-
-### Key Endpoints:
-- `POST /api/login` - Otentikasi User & Dapatkan Bearer Token
-- `GET /api/user` - Mengambil Profil User Logged In (Sanctum)
-- `GET /api/countries` - Daftar Negara (Search & Pagination)
-- `GET /api/ports` - Daftar Pelabuhan
-- `GET /api/shipments` - Monitoring Shipments
-- `GET /api/weather-alerts` - Weather Alerts
-- `GET /api/news` - Berita dengan Sentiment Analysis
-- `POST /api/risk-scores/calculate` - Trigger Rekalkulasi Skor Risiko
-
----
-
-## 📝 Lisensi
-
-Aplikasi ini dikembangkan untuk kebutuhan akademik & profesional di bawah lisensi MIT.
+### 🔑 Kredensial Default Login:
+- **👑 Admin**: `admin@example.com` / `password` (Full Access: CRUD, Reports, PDF/Excel)
+- **👤 User**: `user@example.com` / `password` (Read-Only & Favorites)
