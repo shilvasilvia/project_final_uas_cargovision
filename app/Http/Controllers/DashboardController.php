@@ -8,24 +8,26 @@ use App\Models\Shipment;
 use App\Models\WeatherAlert;
 use App\Models\RiskScore;
 use App\Models\News;
+use App\Models\MarketTrend;
 use App\Services\OpenMeteoService;
+use App\Services\RiskCalculationService;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request, OpenMeteoService $openMeteo)
+    public function index(Request $request, OpenMeteoService $openMeteo, RiskCalculationService $riskCalc)
     {
-        $allCountries = Country::orderBy('name')->get();
-        $selectedCountryId = $request->query('country_id');
+        $allCountries = Country::with(['ports', 'marketTrends'])->orderBy('name')->get();
         
+        $selectedCountryId = $request->query('country_id');
         if (!$selectedCountryId) {
             $idn = $allCountries->firstWhere('code', 'IDN');
-            $selectedCountryId = $idn ? $idn->id : ($allCountries->first()->id ?? null);
+            $selectedCountryId = $idn ? $idn->id : ($allCountries->first()?->id);
         }
 
-        $selectedCountry = Country::with(['ports', 'marketTrends'])->find($selectedCountryId);
+        $selectedCountry = $selectedCountryId ? Country::with(['ports', 'marketTrends'])->find($selectedCountryId) : null;
 
-        // Coords & timezone mapping
+        // Timezone metadata
         $countryMeta = match ($selectedCountry?->code) {
             'IDN' => ['lat' => -6.2088, 'lng' => 106.8456, 'tz' => 'Asia/Jakarta', 'gmt' => 'Indonesia/Jakarta (WIB UTC+7)'],
             'SGP' => ['lat' => 1.3521, 'lng' => 103.8198, 'tz' => 'Asia/Singapore', 'gmt' => 'Singapore (SGT UTC+8)'],
@@ -57,6 +59,52 @@ class DashboardController extends Controller
         $highRiskCount = RiskScore::where('overall_score', '>=', 45)->count();
         $intelligenceNewsCount = News::count();
 
+        // 1. Country Intelligence Grid Data
+        $countryCards = [];
+        foreach ($allCountries as $c) {
+            $risk = RiskScore::where('country_id', $c->id)->first();
+            $trend = MarketTrend::where('country_id', $c->id)->first();
+            
+            $countryCards[] = [
+                'id' => $c->id,
+                'name' => $c->name,
+                'code' => $c->code,
+                'capital' => $c->capital,
+                'region' => $c->region,
+                'population' => $c->population,
+                'risk_score' => $risk ? $risk->overall_score : 25.0,
+                'risk_category' => $risk ? $risk->risk_category : 'Low',
+                'currency_code' => $trend ? $trend->currency_code : 'USD',
+                'exchange_rate' => $trend ? $trend->exchange_rate_usd : 1.0,
+                'inflation' => $trend ? $trend->inflation_rate : 2.5,
+                'gdp_growth' => $trend ? $trend->gdp_growth_rate : 3.0,
+                'ports_count' => $c->ports->count(),
+            ];
+        }
+
+        // 2. Comparison Engine (Country A vs Country B)
+        $firstCountry = $allCountries->first();
+        $secondCountry = $allCountries->skip(1)->first() ?? $firstCountry;
+
+        $countryAId = $request->query('country_a', $allCountries->firstWhere('code', 'AUS')?->id ?? $firstCountry?->id);
+        $countryBId = $request->query('country_b', $allCountries->firstWhere('code', 'BRA')?->id ?? $secondCountry?->id);
+
+        $countryA = $countryAId ? Country::with(['ports', 'marketTrends'])->find($countryAId) : null;
+        $countryB = $countryBId ? Country::with(['ports', 'marketTrends'])->find($countryBId) : null;
+
+        $riskAData = $countryA ? $riskCalc->calculateForCountry($countryA) : [
+            'overall_score' => 25.0, 'weather_risk' => 15.0, 'economic_risk' => 20.0, 'geopolitical_risk' => 30.0, 'operational_risk' => 25.0
+        ];
+        $riskBData = $countryB ? $riskCalc->calculateForCountry($countryB) : [
+            'overall_score' => 30.0, 'weather_risk' => 20.0, 'economic_risk' => 25.0, 'geopolitical_risk' => 35.0, 'operational_risk' => 30.0
+        ];
+
+        // 3. Currency Impact Grid
+        $currencyGrid = MarketTrend::with('country')->take(12)->get();
+
+        // 4. News List with Thumbnails & Categories
+        $recentNews = News::with('country')->latest()->take(6)->get();
+
         // High Risk Countries List
         $highRiskCountries = RiskScore::with('country')
             ->orderBy('overall_score', 'desc')
@@ -81,56 +129,13 @@ class DashboardController extends Controller
         // Ports for Leaflet Map
         $mapPorts = Port::with('country')->whereNotNull('latitude')->whereNotNull('longitude')->get();
 
-        // Recent News
-        $recentNews = News::with('country')->latest()->take(5)->get();
-
-        // Admin API Monitoring Data
+        // Admin API Services Status
         $apiServices = [
-            [
-                'name' => 'Open-Meteo',
-                'description' => 'External Data Service (Weather)',
-                'status' => 'ONLINE',
-                'http_status' => 200,
-                'response_time' => '657 ms',
-                'endpoint' => 'https://api.open-meteo.com/v1/forecast',
-                'last_updated' => 'Just now',
-            ],
-            [
-                'name' => 'Exchange Rate',
-                'description' => 'External Data Service (Currency)',
-                'status' => 'ONLINE',
-                'http_status' => 200,
-                'response_time' => '26 ms',
-                'endpoint' => 'https://open.er-api.com/v6/latest/USD',
-                'last_updated' => 'Just now',
-            ],
-            [
-                'name' => 'World Bank',
-                'description' => 'Macroeconomic Data Service',
-                'status' => 'ONLINE',
-                'http_status' => 200,
-                'response_time' => '420 ms',
-                'endpoint' => 'https://api.worldbank.org/v2/country',
-                'last_updated' => 'Just now',
-            ],
-            [
-                'name' => 'GNews',
-                'description' => 'Realtime News Intelligence Feed',
-                'status' => 'ONLINE',
-                'http_status' => 200,
-                'response_time' => '310 ms',
-                'endpoint' => 'https://gnews.io/api/v4/top-headlines',
-                'last_updated' => 'Just now',
-            ],
-            [
-                'name' => 'REST Countries',
-                'description' => 'Country Metadata Service',
-                'status' => 'ONLINE',
-                'http_status' => 200,
-                'response_time' => '180 ms',
-                'endpoint' => 'https://restcountries.com/v3.1/all',
-                'last_updated' => 'Just now',
-            ],
+            ['name' => 'Open-Meteo', 'description' => 'External Data Service (Weather)', 'status' => 'ONLINE', 'http_status' => 200, 'response_time' => '657 ms', 'endpoint' => 'https://api.open-meteo.com/v1/forecast'],
+            ['name' => 'Exchange Rate', 'description' => 'External Data Service (Currency)', 'status' => 'ONLINE', 'http_status' => 200, 'response_time' => '26 ms', 'endpoint' => 'https://open.er-api.com/v6/latest/USD'],
+            ['name' => 'World Bank', 'description' => 'Macroeconomic Data Service', 'status' => 'ONLINE', 'http_status' => 200, 'response_time' => '420 ms', 'endpoint' => 'https://api.worldbank.org/v2/country'],
+            ['name' => 'GNews', 'description' => 'Realtime News Intelligence Feed', 'status' => 'ONLINE', 'http_status' => 200, 'response_time' => '310 ms', 'endpoint' => 'https://gnews.io/api/v4/top-headlines'],
+            ['name' => 'REST Countries', 'description' => 'Country Metadata Service', 'status' => 'ONLINE', 'http_status' => 200, 'response_time' => '180 ms', 'endpoint' => 'https://restcountries.com/v3.1/all'],
         ];
 
         return view('dashboard', compact(
@@ -145,11 +150,17 @@ class DashboardController extends Controller
             'avgRiskScore',
             'highRiskCount',
             'intelligenceNewsCount',
+            'countryCards',
+            'countryA',
+            'countryB',
+            'riskAData',
+            'riskBData',
+            'currencyGrid',
+            'recentNews',
             'highRiskCountries',
             'shipmentStatusData',
             'weatherSeverityData',
             'mapPorts',
-            'recentNews',
             'apiServices'
         ));
     }
