@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    @livewireStyles
     
     <style>
         body {
@@ -138,11 +139,6 @@
                         </a>
                     </li>
                 @endif
-                <li class="nav-item">
-                    <a class="nav-link" href="/postman_collection.json" download="postman_collection.json">
-                        <i class="fa-solid fa-file-code me-2 text-info"></i>Download Postman Spec
-                    </a>
-                </li>
             </ul>
         </nav>
 
@@ -191,6 +187,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+@livewireScripts
 @stack('scripts')
 </body>
 </html>

@@ -3,6 +3,10 @@
 @section('title', 'Operasional - News & Sentiment Analysis')
 
 @section('content')
+<div class="mb-4">
+    @livewire('realtime-news-component')
+</div>
+
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
         <h6 class="fw-bold mb-0 text-slate-800"><i class="fa-solid fa-newspaper me-2 text-danger"></i>Berita Supply Chain & Analisis Sentimen</h6>
