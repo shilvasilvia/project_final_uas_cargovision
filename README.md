@@ -44,19 +44,21 @@
 
 ---
 
-## 👥 Hak Akses & Pembagian Role User
+## 👥 Hak Akses & Aktivitas Pembagian Role
 
-### 1. 👤 Bagian User (Pengguna)
-User adalah pengguna aplikasi yang memantau rantai pasok global:
-- **Global Country Dashboard**: Memilih negara spesifik (seperti Jerman, China, Indonesia, Australia) untuk menampilkan data GDP, inflasi, populasi, mata uang, dan cuaca.
-- **Favorite Monitoring List**: Menyimpan negara-negara tertentu yang ingin dipantau secara khusus ke dalam daftar favorit.
-- **Analisis & Komparasi**: Memanfaatkan visualisasi grafik, peta cuaca global, dashboard kurs mata uang, analisis sentimen berita, dan *Country Comparison Engine*.
+### 1. 👤 User (Pengguna Biasa / Analis Risiko)
+User adalah pihak yang memanfaatkan sistem untuk melakukan pemantauan (*monitoring*), analisis, dan membantu pengambilan keputusan bisnis logistik.
+- **Memantau Risiko & Cuaca**: Mengakses *Global Country Dashboard* dan *Global Weather Monitoring* untuk melihat *Risk Score*, indikator ekonomi (GDP, inflasi, populasi, mata uang), serta kondisi cuaca ekstrem.
+- **Analisis & Komparasi**: Menggunakan *Country Comparison Engine* untuk membandingkan dua negara (misal: *Germany vs Australia*) serta melihat *Currency Impact Dashboard* dan *Data Visualization Dashboard* (tren GDP, inflasi, kurs, dan risiko).
+- **Pencarian Informasi**: Mencari lokasi pelabuhan dunia melalui *Port Location Dashboard* dan membaca berita logistik/ekonomi di *News Intelligence*.
+- **Manajemen Personal**: Menyimpan dan mengelola daftar negara yang ingin dipantau khusus melalui fitur *Favorite Monitoring List / watchlists*.
 
-### 2. 👑 Bagian Admin (Pengelola)
-Admin memiliki peran sebagai pengelola sistem di back-office:
-- **Kelola User**: Mengelola data pengguna yang terdaftar di dalam platform.
-- **Kelola Master Data & Dataset Pelabuhan**: Mengakses & memperbarui data pelabuhan, negara, dan operasional pengiriman.
-- **Kelola Laporan & Artikel Analisis**: Mengakses modul laporan, rekalkulasi skor risiko, serta ekspor laporan ke format **PDF & Excel**.
+### 2. 👑 Admin (Administrator / Pengelola Sistem)
+Admin bertanggung jawab penuh atas pengelolaan data utama (*master data*), manajemen pengguna, dan konten pendukung sistem agar platform dapat beroperasi dengan baik.
+- **Kelola User**: Mengatur, menambah, memproses, atau menghapus hak akses akun pengguna dalam sistem (`users`).
+- **Kelola Dataset Pelabuhan**: Mengunggah, memperbarui, atau mengelola basis data pelabuhan dunia (`ports` / *World Port Index Dataset*) yang ditampilkan di peta.
+- **Kelola Artikel Analisis**: Mengunggah, mengubah, atau menghapus artikel analisis risiko internal (`articles` / `news`) yang dipublikasikan ke dalam platform.
+- **Pengelolaan Konten & Sistem**: Memastikan ketersediaan dataset internal, seperti kamus kata *sentiment analysis* (`positive_words` & `negative_words`) agar kalkulasi *scoring* dan prediksi berjalan optimal.
 
 ---
 
