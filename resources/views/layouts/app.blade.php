@@ -19,14 +19,14 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f4f6f9;
-            color: #333;
+            background-color: #0b1120;
+            color: #f8fafc;
         }
         .sidebar {
             min-height: 100vh;
             background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
             color: #fff;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
         }
         .sidebar .nav-link {
             color: #94a3b8;
@@ -38,7 +38,7 @@
         }
         .sidebar .nav-link:hover, .sidebar .nav-link.active {
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(56, 189, 248, 0.15);
         }
         .sidebar .nav-link i {
             width: 1.5rem;
@@ -52,8 +52,10 @@
             letter-spacing: 0.5px;
         }
         .top-navbar {
-            background-color: #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background-color: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         .card-stat {
             border: none;
@@ -138,7 +140,7 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <!-- Top Navbar Header -->
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-3 mb-4 border-bottom top-navbar p-3 rounded-3">
-                <h4 class="h5 mb-0 fw-bold text-slate-800">
+                <h4 class="h5 mb-0 fw-bold text-white">
                     @yield('title', 'Global Supply Chain Risk Intelligence System')
                 </h4>
                 <div class="d-flex align-items-center gap-3">
