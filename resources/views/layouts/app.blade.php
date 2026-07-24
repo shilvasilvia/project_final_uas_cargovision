@@ -131,14 +131,6 @@
                     </a>
                 </li>
 
-                @if(auth()->user() && auth()->user()->isAdmin())
-                    <div class="text-uppercase px-3 mt-3 mb-1 text-muted small fw-bold" style="font-size:0.75rem;">Laporan & API (Admin)</div>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}" href="{{ route('reports.index') }}">
-                            <i class="fa-solid fa-file-pdf me-2"></i>Reports & Export
-                        </a>
-                    </li>
-                @endif
             </ul>
         </nav>
 
