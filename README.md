@@ -13,7 +13,7 @@
 
 | No | Modul / Fitur | Status | Deskripsi |
 |:---:|:---|:---:|:---|
-| 1 | 🌍 **Country Intelligence Center** | 🟡 Terimplementasi | Pemantauan 10 negara utama dengan detail indikator makro. |
+| 1 | 🌍 **Country Intelligence Center** | 🟡 Terimplementasi | Pemantauan 15 negara utama dengan detail indikator makro. |
 | 2 | 📊 **Economic Data — GDP, Inflasi, Populasi** | 🟡 Terimplementasi | Integrasi API World Bank & tabel indikator ekonomi. |
 | 3 | 💱 **Currency Impact Dashboard** | 🟡 Terimplementasi | Monitoring dampak nilai tukar mata uang terhadap risiko rantai pasok. |
 | 4 | 🌦️ **Global Weather Monitoring** | 🟡 Terimplementasi | Monitoring peringatan dini badai & cuaca ekstrem di kawasan pelabuhan. |
@@ -32,7 +32,7 @@
 > **Role & Prompt Specification:**
 > Anda adalah Senior Full-Stack Laravel Developer dengan keahlian dalam Data Visualization dan GIS (Geographic Information Systems).
 >
-> **Task:** Membangun aplikasi "Global Supply Chain Intelligence" menggunakan Laravel 12 untuk menampilkan data rantai pasok global 10 negara.
+> **Task:** Membangun aplikasi "Global Supply Chain Intelligence" menggunakan Laravel 12 untuk menampilkan data rantai pasok global 15 negara.
 
 ### 🛠️ Requirement Teknis & Arsitektur:
 - **Framework & UI**: Laravel 12 & Bootstrap 5 dengan aksen Deep Dark Mode modern.
