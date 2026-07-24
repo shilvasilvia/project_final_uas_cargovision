@@ -191,7 +191,38 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // 9. Sample Favorites for Regular User
+        // 9. Market Trends (Currency & Economic Impact)
+        $marketTrendsData = [
+            'IDN' => ['curr' => 'IDR', 'rate' => 15850.00, 'inf' => 2.8, 'gdp' => 5.05, 'score' => 45.0, 'dir' => 'bullish'],
+            'SGP' => ['curr' => 'SGD', 'rate' => 1.34, 'inf' => 2.4, 'gdp' => 3.60, 'score' => 15.0, 'dir' => 'bullish'],
+            'CHN' => ['curr' => 'CNY', 'rate' => 7.23, 'inf' => 0.5, 'gdp' => 5.20, 'score' => 60.0, 'dir' => 'bearish'],
+            'JPN' => ['curr' => 'JPY', 'rate' => 155.20, 'inf' => 2.2, 'gdp' => 1.90, 'score' => 35.0, 'dir' => 'bearish'],
+            'DEU' => ['curr' => 'EUR', 'rate' => 0.92, 'inf' => 2.5, 'gdp' => 0.30, 'score' => 30.0, 'dir' => 'stable'],
+            'USA' => ['curr' => 'USD', 'rate' => 1.00, 'inf' => 3.1, 'gdp' => 2.50, 'score' => 25.0, 'dir' => 'bullish'],
+            'AUS' => ['curr' => 'AUD', 'rate' => 1.52, 'inf' => 3.6, 'gdp' => 1.80, 'score' => 20.0, 'dir' => 'stable'],
+            'KOR' => ['curr' => 'KRW', 'rate' => 1380.00, 'inf' => 2.7, 'gdp' => 1.40, 'score' => 40.0, 'dir' => 'stable'],
+            'NLD' => ['curr' => 'EUR', 'rate' => 0.92, 'inf' => 2.6, 'gdp' => 0.10, 'score' => 22.0, 'dir' => 'stable'],
+            'GBR' => ['curr' => 'GBP', 'rate' => 0.79, 'inf' => 2.3, 'gdp' => 0.50, 'score' => 42.0, 'dir' => 'bearish'],
+            'IND' => ['curr' => 'INR', 'rate' => 83.40, 'inf' => 4.8, 'gdp' => 7.60, 'score' => 50.0, 'dir' => 'bullish'],
+            'ARE' => ['curr' => 'AED', 'rate' => 3.67, 'inf' => 2.0, 'gdp' => 3.40, 'score' => 30.0, 'dir' => 'bullish'],
+            'BRA' => ['curr' => 'BRL', 'rate' => 5.15, 'inf' => 3.9, 'gdp' => 2.90, 'score' => 55.0, 'dir' => 'bearish'],
+            'MYS' => ['curr' => 'MYR', 'rate' => 4.72, 'inf' => 1.8, 'gdp' => 3.70, 'score' => 28.0, 'dir' => 'stable'],
+            'VNM' => ['curr' => 'VND', 'rate' => 25450.00, 'inf' => 3.2, 'gdp' => 5.05, 'score' => 38.0, 'dir' => 'bullish'],
+        ];
+
+        foreach ($marketTrendsData as $code => $m) {
+            \App\Models\MarketTrend::firstOrCreate(['country_id' => $countries[$code]->id], [
+                'currency_code' => $m['curr'],
+                'exchange_rate_usd' => $m['rate'],
+                'inflation_rate' => $m['inf'],
+                'gdp_growth_rate' => $m['gdp'],
+                'currency_impact_score' => $m['score'],
+                'trend_direction' => $m['dir'],
+                'recorded_at' => now(),
+            ]);
+        }
+
+        // 10. Sample Favorites for Regular User
         Favorite::firstOrCreate([
             'user_id' => $user->id,
             'favoritable_type' => Country::class,
@@ -205,3 +236,4 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 }
+
