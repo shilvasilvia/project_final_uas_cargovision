@@ -139,8 +139,8 @@
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link" href="/postman_collection.json" target="_blank">
-                        <i class="fa-solid fa-code me-2"></i>Postman API Spec
+                    <a class="nav-link" href="/postman_collection.json" download="postman_collection.json">
+                        <i class="fa-solid fa-file-code me-2 text-info"></i>Download Postman Spec
                     </a>
                 </li>
             </ul>

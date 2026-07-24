@@ -1,7 +1,8 @@
 <x-guest-layout>
     <!-- Validation Errors -->
     @if ($errors->any())
-        <div class="alert alert-danger border-0 bg-danger bg-opacity-20 text-danger small mb-4">
+        <div class="alert alert-danger border-0 bg-danger bg-opacity-25 text-white small mb-4">
+            <div class="fw-semibold mb-1"><i class="fa-solid fa-triangle-exclamation me-1"></i> Terdapat kesalahan:</div>
             <ul class="mb-0 ps-3">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
