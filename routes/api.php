@@ -40,6 +40,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('news', NewsApiController::class);
     Route::apiResource('risk-scores', RiskScoreApiController::class)->except(['store', 'update', 'destroy']);
 
-    // Extra Calculation Trigger
+    // Extra Calculation Trigger & Aliases (PDF Specification)
     Route::post('risk-scores/calculate', [RiskScoreApiController::class, 'calculate']);
+    Route::get('risk', [RiskScoreApiController::class, 'index']);
+    Route::get('currency', function () {
+        return response()->json([
+            'status' => 'success',
+            'data' => \App\Models\MarketTrend::with('country')->get()
+        ]);
+    });
 });
