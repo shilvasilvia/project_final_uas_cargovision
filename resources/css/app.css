@@ -1,4 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Main Application Styling */
 body {
-    font-family: 'Figtree', sans-serif;
+    font-family: 'Inter', 'Figtree', sans-serif;
 }
+
+
