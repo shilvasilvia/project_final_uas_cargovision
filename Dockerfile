@@ -1,62 +1,72 @@
-# Stage 1: Build Frontend Assets via Vite
-FROM node:20-alpine AS node-builder
+# Stage 1: Build Frontend Assets with Node.js
+FROM node:20-alpine AS frontend
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
-COPY . .
+
+COPY package*.json vite.config.js postcss.config.js tailwind.config.js ./
+COPY resources ./resources
+COPY public ./public
+
+RUN npm ci || npm install
 RUN npm run build
 
-# Stage 2: Production PHP Application & Nginx Web Server
-FROM php:8.2-fpm-bookworm
+# Stage 2: Application Container with PHP 8.2 FPM & Nginx
+FROM php:8.2-fpm-alpine
 
-# Install required system packages, Nginx, Supervisord & gettext-base (for envsubst)
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install system packages & PHP build tools
+RUN apk add --no-cache \
     nginx \
-    supervisor \
-    gettext-base \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    libonig-dev \
-    libsqlite3-dev \
-    libpq-dev \
-    unzip \
-    git \
+    gettext \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    git \
+    unzip \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    libzip-dev \
+    postgresql-dev \
+    oniguruma-dev \
+    libxml2-dev
 
-# Install Docker PHP Extension Installer helper
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN chmod +x /usr/local/bin/install-php-extensions
+# Configure and install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+        pdo \
+        pdo_mysql \
+        pdo_pgsql \
+        mbstring \
+        gd \
+        zip \
+        bcmath \
+        opcache \
+        xml
 
-# Install required PHP extensions
-RUN install-php-extensions pdo_sqlite pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip intl opcache
-
-# Install Composer
+# Copy Composer binary from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Set working directory
 WORKDIR /var/www/html
 
-# Copy application files
+# Copy application source code
 COPY . .
 
-# Copy compiled assets from node-builder stage
-COPY --from=node-builder /app/public/build ./public/build
+# Copy built frontend assets from Stage 1
+COPY --from=frontend /app/public/build ./public/build
 
-# Install PHP production dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+# Install production PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Setup Nginx and Supervisor configs
-COPY docker/nginx.conf.template /etc/nginx/templates/default.conf.template
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+# Set up Nginx configuration template directory
+RUN mkdir -p /etc/nginx/templates
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 
+# Copy and set up Docker entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Fix ownership
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Set directory permissions for Laravel storage & cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-EXPOSE 10000
+EXPOSE 8080
 
 ENTRYPOINT ["docker-entrypoint.sh"]

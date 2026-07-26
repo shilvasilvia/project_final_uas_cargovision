@@ -1,29 +1,45 @@
 services:
   - type: web
-    name: cargovision-app
-    env: docker
-    region: singapore
+    name: global-supply-chain-risk-intelligence
+    runtime: docker
     plan: free
-    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
     envVars:
+      - key: APP_NAME
+        value: "Global Supply Chain Intelligence"
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: "false"
-      - key: APP_URL
-        sync: false
       - key: APP_KEY
         generateValue: true
-      - key: LOG_CHANNEL
-        value: stderr
+      - key: RUN_MIGRATIONS
+        value: "true"
       - key: DB_CONNECTION
-        value: sqlite
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: supply-chain-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: supply-chain-db
+          property: port
       - key: DB_DATABASE
-        value: /var/www/html/database/database.sqlite
-      - key: SESSION_DRIVER
-        value: database
-      - key: CACHE_STORE
-        value: database
-      - key: QUEUE_CONNECTION
-        value: sync
+        fromDatabase:
+          name: supply-chain-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: supply-chain-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: supply-chain-db
+          property: password
 
+databases:
+  - name: supply-chain-db
+    plan: free
+    databaseName: supply_chain_db
+    user: supply_chain_user
