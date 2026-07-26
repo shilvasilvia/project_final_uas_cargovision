@@ -13,8 +13,9 @@ echo "=== Preparing Database & Storage Directories ==="
 mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs
 touch database/database.sqlite
 
-echo "=== Running Database Migrations ==="
+echo "=== Running Database Migrations & Seeders ==="
 php artisan migrate --force
+php artisan db:seed --force
 
 echo "=== Caching Configuration & Routes ==="
 php artisan config:cache
