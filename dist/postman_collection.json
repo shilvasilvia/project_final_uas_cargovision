@@ -1,0 +1,230 @@
+{
+	"info": {
+		"_postman_id": "a8f629d0-8f92-4d2a-89a1-9a9990100100",
+		"name": "Global Supply Chain Risk Intelligence API",
+		"description": "Kumpulan API Endpoint untuk Sistem Informasi Risk Intelligence Supply Chain Global.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "1. Login (Get Bearer Token)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "login"]
+						}
+					}
+				},
+				{
+					"name": "2. Get Current User Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user",
+							"host": ["{{base_url}}"],
+							"path": ["api", "user"]
+						}
+					}
+				},
+				{
+					"name": "3. Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "logout"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Countries API",
+			"item": [
+				{
+					"name": "Get All Countries",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{"key": "token", "value": "{{bearer_token}}", "type": "string"}]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/countries?search=Indonesia",
+							"host": ["{{base_url}}"],
+							"path": ["api", "countries"],
+							"query": [{"key": "search", "value": "Indonesia"}]
+						}
+					}
+				},
+				{
+					"name": "Create Country",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{"key": "token", "value": "{{bearer_token}}", "type": "string"}]
+						},
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Japan\",\n  \"code\": \"JPN\",\n  \"capital\": \"Tokyo\",\n  \"region\": \"East Asia\",\n  \"population\": 125000000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/countries",
+							"host": ["{{base_url}}"],
+							"path": ["api", "countries"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Shipments API",
+			"item": [
+				{
+					"name": "Get All Shipments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{"key": "token", "value": "{{bearer_token}}", "type": "string"}]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/shipments",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Weather Alerts API",
+			"item": [
+				{
+					"name": "Get Weather Alerts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{"key": "token", "value": "{{bearer_token}}", "type": "string"}]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/weather-alerts",
+							"host": ["{{base_url}}"],
+							"path": ["api", "weather-alerts"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "News API",
+			"item": [
+				{
+					"name": "Get News with Sentiment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{"key": "token", "value": "{{bearer_token}}", "type": "string"}]
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/news",
+							"host": ["{{base_url}}"],
+							"path": ["api", "news"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Risk Scores API",
+			"item": [
+				{
+					"name": "Trigger Risk Calculation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [{"key": "token", "value": "{{bearer_token}}", "type": "string"}]
+						},
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"country_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/risk-scores/calculate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "risk-scores", "calculate"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000"
+		},
+		{
+			"key": "bearer_token",
+			"value": ""
+		}
+	]
+}
