@@ -28,6 +28,7 @@ php artisan storage:link --force || true
 
 # Run database migrations and seeders if needed
 php artisan migrate --force || echo "Migration skipped or failed"
+php artisan db:seed --force || echo "Seeding skipped or failed"
 
 # Cache configuration, routes, and views for production performance
 php artisan config:cache
