@@ -1,7 +1,5 @@
 {
   "version": 2,
-  "framework": null,
-  "outputDirectory": "public",
   "functions": {
     "api/index.php": {
       "runtime": "vercel-php@0.7.3"
@@ -29,11 +27,6 @@
     "APP_ENV": "production",
     "APP_DEBUG": "false",
     "LOG_CHANNEL": "stderr",
-    "VIEW_COMPILED_PATH": "/tmp",
-    "APP_SERVICES_CACHE": "/tmp/services.php",
-    "APP_PACKAGES_CACHE": "/tmp/packages.php",
-    "APP_CONFIG_CACHE": "/tmp/config.php",
-    "APP_ROUTES_CACHE": "/tmp/routes.php",
     "SESSION_DRIVER": "cookie",
     "CACHE_STORE": "array"
   }

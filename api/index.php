@@ -41,4 +41,9 @@ $_ENV['DB_DATABASE'] = $targetDb;
 $_SERVER['DB_CONNECTION'] = 'sqlite';
 $_SERVER['DB_DATABASE'] = $targetDb;
 
-require __DIR__ . '/../public/index.php';
+try {
+    require __DIR__ . '/../public/index.php';
+} catch (\Throwable $e) {
+    error_log("Laravel Vercel Error: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+    echo "<h1>Application Error</h1><p>" . htmlspecialchars($e->getMessage()) . "</p>";
+}
